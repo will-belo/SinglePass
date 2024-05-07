@@ -18,7 +18,7 @@ class UserRepository implements UserRepositoryInterface
         return $allUser;
     }
 
-    public function signin(Request $data): string|Exception
+    public function signin(Request $data): array|Exception
     {
         $credentials = $data->only('email', 'password');
 
@@ -26,18 +26,22 @@ class UserRepository implements UserRepositoryInterface
             throw new Exception('Credenciais de login inválidas.');
         }
 
-        return $token;
+        JWTAuth::setToken($token);
+        
+        $payload = JWTAuth::getPayload();
+
+        return [$token, $payload->get('user_id')];
     }
 
     public function store(Request $data): string|Exception
     {
-        $userModel = User::create([
-            'name'     => $data->name,
-            'email'    => $data->email,
-            'password' => $data->password,
-        ]);
-
-        if (! $userModel) {
+        try{
+            $userModel = User::create([
+                'name'     => $data->name,
+                'email'    => $data->email,
+                'password' => $data->password,
+            ]);
+        }catch(Exception){
             throw new Exception('Erro ao cadastrar o usuário.');
         }
 

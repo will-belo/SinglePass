@@ -12,7 +12,7 @@ interface UserRepositoryInterface
 {
     public function getAll();
 
-    public function signin(Request $data): string|Exception;
+    public function signin(Request $data): array|Exception;
 
     public function store(Request $data): string|Exception;
 }

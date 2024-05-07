@@ -11,7 +11,7 @@ class UserController extends Controller
     public function __construct(
         public UserRepositoryInterface $userRepository
     ){}
-
+    
     public function signin(Request $request)
     {
         try{
@@ -22,7 +22,10 @@ class UserController extends Controller
             
             $token = $this->userRepository->signin($request);
 
-            return response()->json($token, 200);
+            return response()->json([
+                'token' => $token[0],
+                'user_id' => $token[1],
+            ], 200);
         }catch(Exception $error){
             return response()->json($error->getMessage(), 401);
         }
@@ -41,7 +44,7 @@ class UserController extends Controller
 
             return response($token, 201);
         }catch(Exception $error){
-            return response($error->getMessage(), 500);
+            return response()->json($error->getMessage(), 400);
         }
     }
 
@@ -50,6 +53,7 @@ class UserController extends Controller
         $claims = $request->attributes->get('claims');
 
         return response([
+            'id' => $claims['user_id'],
             'name' => $claims['name'],
             'role' => $claims['role'],
         ], 200);
