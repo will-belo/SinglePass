@@ -10,8 +10,6 @@ use Laravel\Sanctum\NewAccessToken;
 
 interface UserRepositoryInterface
 {
-    public function getAll();
-
     public function signin(Request $data): array|Exception;
 
     public function store(Request $data): string|Exception;

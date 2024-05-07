@@ -11,13 +11,6 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserRepository implements UserRepositoryInterface
 {
-    public function getAll()
-    {
-        $allUser = User::all();
-
-        return $allUser;
-    }
-
     public function signin(Request $data): array|Exception
     {
         $credentials = $data->only('email', 'password');
