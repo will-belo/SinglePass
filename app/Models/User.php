@@ -30,7 +30,7 @@ class User extends Authenticatable implements JWTSubject
             'user_id' => $this->id,
             'email' => $this->email,
             'name' => $this->name,
-            'role' => 'common' // Supondo que você tenha um atributo de role no seu modelo
+            'role' => $this->role,
         ];
     }
 
@@ -42,6 +42,7 @@ class User extends Authenticatable implements JWTSubject
     protected $fillable = [
         'name',
         'email',
+        'role',
         'password',
     ];
 

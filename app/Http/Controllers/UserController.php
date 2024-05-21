@@ -35,14 +35,15 @@ class UserController extends Controller
     {
         try{
             $request->validate([
-                'name' => 'required|string',
-                'email' => 'required|email',
+                'name'     => 'required|string',
+                'email'    => 'required|email',
+                'role'     => 'required|string',
                 'password' => 'required',
             ]);
 
-            $token = $this->userRepository->store($request);
+            $id = $this->userRepository->store($request);
 
-            return response($token, 201);
+            return response($id, 201);
         }catch(Exception $error){
             return response()->json($error->getMessage(), 400);
         }
