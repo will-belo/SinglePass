@@ -10,4 +10,3 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/signin', [UserController::class, 'signin']);
 Route::post('/register', [UserController::class, 'create']);
-Route::get('/verif', [UserController::class, 'verify'])->middleware(EnsureTokenIsValid::class);
