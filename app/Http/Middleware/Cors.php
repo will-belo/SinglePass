@@ -23,6 +23,6 @@ class Cors
         $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, X-Auth-Token, Origin, Authorization');
         $response->headers->set('Access-Control-Allow-Credentials', 'true');
 
-        return $next($request);
+        return $response;
     }
 }
