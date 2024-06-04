@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Hash;
 use App\Interfaces\UserRepositoryInterface;
+use Illuminate\Database\QueryException;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -36,8 +37,8 @@ class UserRepository implements UserRepositoryInterface
                 'role'     => $data->role,
                 'password' => Hash::make($data->password),
             ]);
-        }catch(Exception){
-            throw new Exception('Erro ao cadastrar o usuário.');
+        }catch(QueryException $error){
+            throw new Exception($error->getMessage());
         }
 
         $user_ID = $userModel->id;
