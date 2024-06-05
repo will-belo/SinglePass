@@ -45,7 +45,7 @@ class UserController extends Controller
 
             return response($id, 201);
         }catch(Exception $error){
-            return response()->json($error->getMessage(), 400);
+            return response()->json('Erro ao cadastrar usuário', 400);
         }
     }
 
