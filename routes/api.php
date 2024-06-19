@@ -2,7 +2,10 @@
 
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\EnsureTokenIsValid;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/user', function (Request $request) {
@@ -18,3 +21,38 @@ Route::get('/verify', [UserController::class, 'verify'])->middleware(EnsureToken
 Route::get('/bcrypt', function () {
     return response()->json(Hash::make('162867'));
 });
+
+Route::post('/forgot-password', function (Request $request) {
+    $request->validate(['email' => 'required|email']);
+
+    $status = Password::sendResetLink(
+        $request->only('email')
+    );
+    
+    return $status === Password::RESET_LINK_SENT
+        ? response()->json('Email de recuperação enviado', 200)
+        : response()->json('Erro ao enviar o email de recuperação', 400);
+});
+
+Route::post('/reset-password', function (Request $request) {
+    $request->validate([
+        'token' => 'required',
+        'email' => 'required|email',
+        'password' => 'required|min:8|confirmed',
+    ]);
+ 
+    $status = Password::reset(
+        $request->only('email', 'password', 'password_confirmation', 'token'),
+        function (User $user, string $password) {
+            $user->password = Hash::make($password);
+ 
+            $user->save();
+ 
+            //event(new PasswordReset($user));
+        }
+    );
+ 
+    return $status === Password::PASSWORD_RESET
+        ? response()->json('Senha atualizada', 200)
+        : response()->json('Não foi possível atualizar a senha', 400);
+})->middleware('guest')->name('password.update');
