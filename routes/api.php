@@ -55,4 +55,4 @@ Route::post('/reset-password', function (Request $request) {
     return $status === Password::PASSWORD_RESET
         ? response()->json('Senha atualizada', 200)
         : response()->json('Não foi possível atualizar a senha', 400);
-})->middleware('guest')->name('password.update');
+});
