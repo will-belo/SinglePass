@@ -23,7 +23,11 @@ Route::get('/bcrypt', function () {
 });
 
 Route::post('/forgot-password', function (Request $request) {
-    $request->validate(['email' => 'required|email']);
+    try{
+        $request->validate(['email' => 'required|email']);
+    }catch(\Exception $error){
+        return response()->json($error->getMessage());
+    }
 
     $status = Password::sendResetLink(
         $request->only('email')
