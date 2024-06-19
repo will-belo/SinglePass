@@ -26,7 +26,7 @@ Route::post('/forgot-password', function (Request $request) {
     try{
         $request->validate(['email' => 'required|email']);
     }catch(\Exception $error){
-        return response()->json($error->getMessage());
+        return response()->json($error->getMessage(), 400);
     }
 
     $status = Password::sendResetLink(
@@ -43,10 +43,10 @@ Route::post('/reset-password', function (Request $request) {
         $request->validate([
             'token' => 'required',
             'email' => 'required|email',
-            'password' => 'required|min:8|confirmed',
+            'password' => 'required|min:6|confirmed',
         ]);
     }catch(\Exception $error){
-        return response()->json($error->getMessage());
+        return response()->json($error->getMessage(), 400);
     }
 
     $status = Password::reset(
