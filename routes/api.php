@@ -35,12 +35,13 @@ Route::post('/forgot-password', function (Request $request) {
 });
 
 Route::post('/reset-password', function (Request $request) {
+    dd($request);
     $request->validate([
         'token' => 'required',
         'email' => 'required|email',
         'password' => 'required|min:8|confirmed',
     ]);
- dd($request);
+
     $status = Password::reset(
         $request->only('email', 'password', 'password_confirmation', 'token'),
         function (User $user, string $password) {
