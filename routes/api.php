@@ -42,7 +42,7 @@ Route::post('/reset-password', function (Request $request) {
             'password' => 'required|min:8|confirmed',
         ]);
     }catch(\Exception $error){
-        return response()->json($error);
+        return response()->json($error->getMessage());
     }
 
     $status = Password::reset(
