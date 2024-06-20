@@ -41,11 +41,14 @@ class UserController extends Controller
                 'password' => 'required',
             ]);
 
-            $id = $this->userRepository->store($request);
+            $data = $this->userRepository->store($request);
 
-            return response($id, 201);
+            return response([
+                'token' => $data[0],
+                'user_id' => $data[1],
+            ], 201);
         }catch(Exception $error){
-            return response()->json('Erro ao cadastrar usuário', 400);
+            return response()->json($error->getMessage(), 400);
         }
     }
 

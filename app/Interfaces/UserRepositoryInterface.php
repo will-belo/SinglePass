@@ -12,5 +12,5 @@ interface UserRepositoryInterface
 {
     public function signin(Request $data): array|Exception;
 
-    public function store(Request $data): string|Exception;
+    public function store(Request $data): array|Exception;
 }

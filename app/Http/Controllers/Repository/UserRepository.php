@@ -28,7 +28,7 @@ class UserRepository implements UserRepositoryInterface
         return [$token, $payload->get('user_id')];
     }
 
-    public function store(Request $data): string|Exception
+    public function store(Request $data): array|Exception
     {
         try{
             $userModel = User::create([
@@ -41,8 +41,8 @@ class UserRepository implements UserRepositoryInterface
             throw new Exception($error->getMessage());
         }
 
-        $user_ID = $userModel->id;
-
-        return $user_ID;
+        $token = JWTAuth::fromUser($userModel);
+        
+        return [$token, $userModel->id];
     }
 }
