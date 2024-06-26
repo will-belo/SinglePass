@@ -36,7 +36,7 @@ class UserController extends Controller
         try{
             $request->validate([
                 'name'     => 'required|string',
-                'email'    => 'required|email',
+                'email'    => 'required|email|unique:App\Models\User,email',
                 'role'     => 'required|string',
                 'password' => 'required',
             ]);
