@@ -60,7 +60,16 @@ Route::post('/reset-password', function (Request $request) {
         }
     );
  
-    return $status === Password::PASSWORD_RESET
-        ? response()->json('Senha atualizada', 200)
-        : response()->json('Não foi possível atualizar a senha', 400);
+    if($status === Password::PASSWORD_RESET){
+        return response()->json('Senha atualizada', 200);
+    }else{
+        $errorMessages = [
+            Password::INVALID_USER => 'Email não encontrado.',
+            Password::INVALID_TOKEN => 'Token de reset de senha inválido ou expirado.',
+        ];
+
+        $errorMessage = $errorMessages[$status] ?? 'Não foi possível atualizar a senha';
+
+        return response()->json($errorMessage, 400);
+    }
 });
